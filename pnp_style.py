@@ -213,7 +213,7 @@ if __name__ == '__main__':
     
     seed_everything(config["seed"])
     print(config)
-    model_key = "/mnt/hdd/ZhuangChenyi/pretrained_models/application/blipdiffusion"
+    model_key = "blipdiffusion"
     blip_diffusion_pipe = BLIP.from_pretrained(model_key, torch_dtype=torch.float16).to("cuda")
     scheduler = PNDMScheduler.from_pretrained(model_key, subfolder="scheduler")
     scheduler.set_timesteps(config["n_timesteps"])
