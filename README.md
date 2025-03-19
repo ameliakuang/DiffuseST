@@ -1,4 +1,3 @@
-<div align="center">
 <h1>DiffuseST: Unleashing the Capability of the Diffusion Model for Style Transfer</h1>
 
 Ying Hu, [Chenyi Zhuang](https://chenyi-zhuang.github.io/), Pan Gao
