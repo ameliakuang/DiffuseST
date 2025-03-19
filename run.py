@@ -120,7 +120,7 @@ if __name__ == "__main__":
     parser.add_argument('--sd_version', type=str, default='2.1', choices=['1.5', '2.0', '2.1'],
                         help="stable diffusion version")
     parser.add_argument('--device', type=str, default="cuda")
-    parser.add_argument('--alpha', type=int, default=0.1)
+    parser.add_argument('--alpha', type=float, default=0.1)
     parser.add_argument('--seed', type=int, default=1)
     parser.add_argument('--ddpm_steps', type=int, default=999)
     parser.add_argument('--steps_to_save', type=int, default=1000)
