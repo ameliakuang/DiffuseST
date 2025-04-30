@@ -20,9 +20,9 @@ from pnp_style import PNP, BLIP
 
 
 def run(opt):
-    model_key = "blipdiffusion"
+    model_key = "Salesforce/blipdiffusion"
 
-    blip_diffusion_pipe = BLIP.from_pretrained(model_key, torch_dtype=torch.float16).to("cuda")
+    blip_diffusion_pipe = BLIP.from_pretrained(model_key, torch_dtype=torch.float16).to(opt.device)
     
     scheduler = PNDMScheduler.from_pretrained(model_key, subfolder="scheduler")
     scheduler.set_timesteps(opt.ddpm_steps)
@@ -71,7 +71,7 @@ def run(opt):
                 latents_path = os.path.join(save_path, f'noisy_latents_{t}.pt')
                 if os.path.exists(latents_path):
                     content_latents.append(torch.load(latents_path))
-            content_latents = torch.cat(content_latents, dim=0).to("cuda")
+            content_latents = torch.cat(content_latents, dim=0).to(opt.device)
         all_content_latents.append(content_latents)
 
         all_style_latents = []
@@ -100,14 +100,15 @@ def run(opt):
                     latents_path = os.path.join(save_path, f'noisy_latents_{t}.pt')
                     if os.path.exists(latents_path):
                         style_latents.append(torch.load(latents_path))
-                style_latents = torch.cat(style_latents, dim=0).to("cuda")
+                style_latents = torch.cat(style_latents, dim=0).to(opt.device)
             all_style_latents.append(style_latents)
             
         
     for content_latents, content_file in zip(all_content_latents, content_path):
         for style_latents, style_file in zip(all_style_latents, style_path):
             pnp.run_pnp(content_latents, style_latents, style_file, content_fn=content_file, style_fn=style_file)
-            torch.cuda.empty_cache()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
 
     
 if __name__ == "__main__":
